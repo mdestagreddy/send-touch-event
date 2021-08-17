@@ -1,5 +1,5 @@
 HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
-  if (obj == null) { obj = {} }
+  obj = obj == null ? {} : obj;
   let t = {
     x: 0,
     y: 0,
@@ -20,6 +20,10 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
     target: this,
     clientX: t.x,
     clientY: t.y,
+    pageX: t.x,
+    pageY: t.y,
+    screenX: t.x,
+    screenY: t.y,
     radiusX: t.rX,
     radiusY: t.rY,
     rotationAngle: t.angle,
@@ -36,4 +40,28 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
   });
 
   this.dispatchEvent(touchEvent);
+}
+HTMLElement.prototype.sendTouchHandler = function(type, obj) {
+  var el = this;
+  type = (type || "").toLowerCase;
+  obj = obj == null ? {} : obj;
+  
+  if (type == "tap") {
+    el.sendTouchEvent("touchstart", obj);
+    window.requestAnimationFrame(function() {
+      el.sendTouchEvent("touchend", obj);
+    });
+  }
+  if (type == "doubletap") {
+    var count = 0;
+    var dbltap;
+    dbltap = setInterval(function() {
+      if (count >= 2) { clearInterval(dbltap); return; }
+      count += 1;
+      el.sendTouchEvent("touchstart", obj);
+      window.requestAnimationFrame(function() {
+        el.sendTouchEvent("touchend", obj);
+      });
+    }, 50);
+  }
 }
