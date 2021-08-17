@@ -51,7 +51,7 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
 //Send Touch Control
 HTMLElement.prototype.sendTouchControl = function(typeControl, obj) {
   let el = this;
-  let type = (typeControl || "");
+  let type = (typeControl || "").toLowerCase();
   
   if (type == "tap") {
     _sendTouchEventHandle(el, "touchstart", obj);
@@ -70,5 +70,46 @@ HTMLElement.prototype.sendTouchControl = function(typeControl, obj) {
         _sendTouchEventHandle(el, "touchend", obj);
       });
     }, 50);
+  }
+  if (type == "swipe") {
+    this.swipe = function(start, end, duration) {
+      let startPos = {x: 0, y: 0}
+      let endPos = {x: 0, y: 0}
+      startPos.x = start.x ? start.x : startPos.x;
+      startPos.y = start.y ? start.y : startPos.y;
+      endPos.x = end.x ? end.x : endPos.x;
+      endPos.y = end.y ? end.y : endPos.y;
+      _sendTouchEventHandle(el, "touchstart", {x: startPos.x, y: startPos.y});
+      
+      let anim = {
+        startTime: performance.now(),
+        current: 0,
+        rAF: undefined,
+        x: 0,
+        y: 0
+      }
+      if (obj == null) {
+        anim.rAF = function() {
+          window.requestAnimationFrame(anim.rAF);
+          if (anim.current > 1) {
+            window.cancelAnimationFrame(anim.rAF);
+            _sendTouchEventHandle(el, "touchend", {x: anim.x, y: anim.y});
+          }
+          anim.current = (0 - (anim.startTime - performance.now())) / duration;
+          anim.x = startPos.x + ((endPos.x - startPos.x) * anim.current);
+          anim.y = startPos.y + ((endPos.y - startPos.y) * anim.current);
+          
+          _sendTouchEventHandle(el, "touchmove", {
+            x: anim.x,
+            y: anim.y
+          });
+        }
+      }
+      else {
+        let err = "No required 'obj' object.";
+        console.error(err);
+        throw Error(err);
+      }
+    }
   }
 }
