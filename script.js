@@ -1,3 +1,4 @@
+//Send Touch Event
 HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
   obj = obj == null ? {} : obj;
   let t = {
@@ -41,6 +42,8 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
 
   this.dispatchEvent(touchEvent);
 }
+
+//Send Touch Handler
 HTMLElement.prototype.sendTouchHandler = function(typeHandler, o) {
   var el = this;
   var type = (typeHandler || "").toLowerCase();
@@ -56,7 +59,7 @@ HTMLElement.prototype.sendTouchHandler = function(typeHandler, o) {
     var count = 0;
     var dbltap;
     dbltap = setInterval(function() {
-      if (count >= 2) { clearInterval(dbltap); return; }
+      if (count >= 2) { clearInterval(dbltap); }
       count += 1;
       el.sendTouchEvent("touchstart", obj);
       window.requestAnimationFrame(function() {
