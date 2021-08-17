@@ -50,7 +50,7 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
 
 //Send Touch Control
 HTMLElement.prototype.sendTouchControl = function(typeControl, obj) {
-  const el = this;
+  let el = this;
   let type = (typeControl || "");
   
   if (type == "tap") {
