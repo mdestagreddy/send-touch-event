@@ -53,7 +53,7 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
 }
 
 //Send Touch Control
-HTMLElement.prototype.sendTouchControl = function(typeControl, obj) {
+HTMLElement.prototype.sendTouchControl = function(typeControl, obj, swipeObj) {
   let el = this;
   let type = (typeControl || "").toLowerCase();
   
@@ -76,44 +76,52 @@ HTMLElement.prototype.sendTouchControl = function(typeControl, obj) {
     }, 50);
   }
   if (type == "swipe") {
-    el.swipe = function(start, end, duration) {
-      let startPos = {x: 0, y: 0}
-      let endPos = {x: 0, y: 0}
-      startPos.x = start.x ? start.x : startPos.x;
-      startPos.y = start.y ? start.y : startPos.y;
-      endPos.x = end.x ? end.x : endPos.x;
-      endPos.y = end.y ? end.y : endPos.y;
-      _sendTouchEventHandle(el, "touchstart", {x: startPos.x, y: startPos.y});
-      
-      let anim = {
-        startTime: performance.now(),
-        current: 0,
-        rAF: undefined,
-        x: 0,
-        y: 0
-      }
-      if (obj == null) {
-        anim.rAF = function() {
-          window.requestAnimationFrame(anim.rAF);
-          if (anim.current == 1) {
-            window.cancelAnimationFrame(anim.rAF);
-            _sendTouchEventHandle(el, "touchend", {x: anim.x, y: anim.y});
-          }
-          anim.current = Math.max(0, Math.min(1, (0 - (anim.startTime - performance.now())) / duration));
-          anim.x = startPos.x + ((endPos.x - startPos.x) * anim.current);
-          anim.y = startPos.y + ((endPos.y - startPos.y) * anim.current);
-          
-          _sendTouchEventHandle(el, "touchmove", {
-            x: anim.x,
-            y: anim.y
-          });
+    let start = {x: 0, y: 0}
+    let end = {x: 0, y: 0}
+    let duration = 0;
+    swipeObj = swipeObj ? swipeObj : {};
+    start.x = swipeObj.start.x && swipeObj.start ? swipeObj.start.x : start.x;
+    start.y = swipeObj.start.y && swipeObj.start ? swipeObj.start.y : start.y;
+    end.x = swipeObj.end.x && swipeObj.end ? swipeObj.end.x : end.x;
+    end.y = swipeObj.end.y && swipeObj.end ? swipeObj.end.y : end.y;
+    duration = swipeObj.duration ? swipeObj.duration : duration;
+    
+    let startPos = {x: 0, y: 0}
+    let endPos = {x: 0, y: 0}
+    startPos.x = start.x ? start.x : startPos.x;
+    startPos.y = start.y ? start.y : startPos.y;
+    endPos.x = end.x ? end.x : endPos.x;
+    endPos.y = end.y ? end.y : endPos.y;
+    _sendTouchEventHandle(el, "touchstart", {x: startPos.x, y: startPos.y});
+    
+    let anim = {
+      startTime: performance.now(),
+      current: 0,
+      rAF: undefined,
+      x: 0,
+      y: 0
+    }
+    if (obj == null) {
+      anim.rAF = function() {
+        window.requestAnimationFrame(anim.rAF);
+        if (anim.current == 1) {
+          window.cancelAnimationFrame(anim.rAF);
+          _sendTouchEventHandle(el, "touchend", {x: anim.x, y: anim.y});
         }
+        anim.current = Math.max(0, Math.min(1, (0 - (anim.startTime - performance.now())) / duration));
+        anim.x = startPos.x + ((endPos.x - startPos.x) * anim.current);
+        anim.y = startPos.y + ((endPos.y - startPos.y) * anim.current);
+        
+        _sendTouchEventHandle(el, "touchmove", {
+          x: anim.x,
+          y: anim.y
+        });
       }
-      else {
-        let err = "No required 'obj' object.";
-        console.error(err);
-        throw Error(err);
-      }
+    }
+    else {
+      let err = "No required 'obj' object.";
+      console.error(err);
+      throw Error(err);
     }
   }
 }
