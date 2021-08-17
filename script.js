@@ -43,7 +43,7 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
 }
 HTMLElement.prototype.sendTouchHandler = function(type, obj) {
   var el = this;
-  type = (type || "").toLowerCase;
+  type = (type || "").toLowerCase();
   obj = obj == null ? {} : obj;
   
   if (type == "tap") {
