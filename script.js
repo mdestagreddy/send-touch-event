@@ -117,6 +117,7 @@ HTMLElement.prototype.sendTouchControl = function(typeControl, obj, swipeObj) {
           y: anim.y
         });
       }
+      anim.rAF();
     }
     else {
       let err = "No required 'obj' object.";
