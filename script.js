@@ -51,18 +51,18 @@ HTMLElement.prototype.sendTouchHandler = function(typeHandler, o) {
   
   if (type == "tap") {
     el.sendTouchEvent("touchstart", obj);
-    window.requestAnimationFrame(function() {
+    window.requestAnimationFrame(() => {
       el.sendTouchEvent("touchend", obj);
     });
   }
   if (type == "doubletap") {
     let count = 0;
     let dbltap;
-    dbltap = setInterval(function() {
+    dbltap = setInterval(() => {
       if (count >= 2) { clearInterval(dbltap); }
       count += 1;
       el.sendTouchEvent("touchstart", obj);
-      window.requestAnimationFrame(function() {
+      window.requestAnimationFrame(() => {
         el.sendTouchEvent("touchend", obj);
       });
     }, 50);
