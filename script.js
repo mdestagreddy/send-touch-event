@@ -1,4 +1,5 @@
 HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
+  if (obj == null) { obj = {} }
   let t = {
     x: 0,
     y: 0,
