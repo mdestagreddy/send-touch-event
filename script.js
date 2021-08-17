@@ -76,7 +76,7 @@ HTMLElement.prototype.sendTouchControl = function(typeControl, obj) {
     }, 50);
   }
   if (type == "swipe") {
-    this.swipe = function(start, end, duration) {
+    el.swipe = function(start, end, duration) {
       let startPos = {x: 0, y: 0}
       let endPos = {x: 0, y: 0}
       startPos.x = start.x ? start.x : startPos.x;
