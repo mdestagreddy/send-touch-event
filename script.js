@@ -45,9 +45,9 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
 
 //Send Touch Handler
 HTMLElement.prototype.sendTouchHandler = function(typeHandler, o) {
-  var el = this;
-  var type = (typeHandler || "").toLowerCase();
-  var obj = o == null ? {} : o;
+  const el = this;
+  let type = (typeHandler || "").toLowerCase();
+  let obj = o == null ? {} : o;
   
   if (type == "tap") {
     el.sendTouchEvent("touchstart", obj);
@@ -56,8 +56,8 @@ HTMLElement.prototype.sendTouchHandler = function(typeHandler, o) {
     });
   }
   if (type == "doubletap") {
-    var count = 0;
-    var dbltap;
+    let count = 0;
+    let dbltap;
     dbltap = setInterval(function() {
       if (count >= 2) { clearInterval(dbltap); }
       count += 1;
