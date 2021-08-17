@@ -1,5 +1,5 @@
-//Send Touch Event
-HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
+//Sending Touch Event
+function _sendTouchEventHandle(elem, eventType, obj) {
   obj = obj == null ? {} : obj;
   let t = {
     x: 0,
@@ -18,7 +18,7 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
   
   const touchObj = new Touch({
     identifier: Date.now(),
-    target: this,
+    target: elem,
     clientX: t.x,
     clientY: t.y,
     pageX: t.x,
@@ -40,19 +40,23 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
     shiftKey: true,
   });
 
-  this.dispatchEvent(touchEvent);
+  elem.dispatchEvent(touchEvent);
+}
+
+//Send Touch Event
+HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
+  _sendTouchEventHandle(this, eventType, obj);
 }
 
 //Send Touch Handler
-HTMLElement.prototype.sendTouchHandler = function(typeHandler, o) {
+HTMLElement.prototype.sendTouchHandler = function(typeHandler, obj) {
   const el = this;
   let type = (typeHandler || "").toLowerCase();
-  let obj = o == null ? {} : o;
   
   if (type == "tap") {
-    el.sendTouchEvent("touchstart", obj);
+    _sendTouchEventHandle(el, "touchstart", obj);
     window.requestAnimationFrame(() => {
-      el.sendTouchEvent("touchend", obj);
+      _sendTouchEventHandle(el, "touchend", obj);
     });
   }
   if (type == "doubletap") {
@@ -61,9 +65,9 @@ HTMLElement.prototype.sendTouchHandler = function(typeHandler, o) {
     dbltap = setInterval(() => {
       if (count >= 2) { clearInterval(dbltap); }
       count += 1;
-      el.sendTouchEvent("touchstart", obj);
+      _sendTouchEventHandle(el, "touchstart", obj);
       window.requestAnimationFrame(() => {
-        el.sendTouchEvent("touchend", obj);
+        _sendTouchEventHandle(el, "touchend", obj);
       });
     }, 50);
   }
