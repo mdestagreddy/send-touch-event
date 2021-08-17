@@ -1,3 +1,7 @@
+/**
+  @2021 mdestagreddy Github
+**/
+
 //Sending Touch Event
 function _sendTouchEventHandle(elem, eventType, obj) {
   obj = obj == null ? {} : obj;
