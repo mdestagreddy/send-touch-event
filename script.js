@@ -5,7 +5,7 @@ HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
     rX: 0,
     rY: 0,
     angle: 0,
-    force: 0.5
+    force: 0
   }
   t.x = obj.x ? obj.x : t.x;
   t.y = obj.y ? obj.y : t.y;
