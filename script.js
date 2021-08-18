@@ -47,6 +47,9 @@ function _sendTouchEventHandle(elem, eventType, obj) {
   elem.dispatchEvent(touchEvent);
 }
 
+//Export Send Touch Event
+export function send
+
 //Send Touch Event
 HTMLElement.prototype.sendTouchEvent = function(eventType, obj) {
   _sendTouchEventHandle(this, eventType, obj);
@@ -126,3 +129,6 @@ HTMLElement.prototype.sendTouchControl = function(typeControl, obj, swipeObj) {
     }
   }
 }
+
+//Export file to another file
+export { _sendTouchEventHandle }
