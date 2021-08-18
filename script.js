@@ -109,7 +109,7 @@ HTMLElement.prototype.sendTouchControl = function(typeControl, obj, swipeObj) {
         else {
           window.cancelAnimationFrame(anim.rAF);
         }
-        anim.current = Math.max(0, Math.min(1, (0 - (anim.startTime - performance.now())) / duration));
+        anim.current = (0 - (anim.startTime - performance.now())) / duration;
         anim.x = startPos.x + ((endPos.x - startPos.x) * anim.current);
         anim.y = startPos.y + ((endPos.y - startPos.y) * anim.current);
         if (anim.current >= 1) {
