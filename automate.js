@@ -38,7 +38,7 @@ function automateTouchEvent(el) {
     let rAF;
     if (t.arrays.length != 0 && t.playing != true && t.recording != true) {
       t.playing = true;
-      rAF = setTimeout(() => {
+      rAF = () => {
         if (count >= t.arrays.length) {
           t.count = 0;
         }
@@ -55,7 +55,8 @@ function automateTouchEvent(el) {
           y: t.arrays[count].y,
         });
         t.count = Math.min(t.arrays.length, t.count + 1);
-      }, 0);
+      }
+      rAF();
     }
   }
   t.stopAutomate = () => {
