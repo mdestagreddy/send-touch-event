@@ -112,11 +112,10 @@ HTMLElement.prototype.sendTouchControl = function(typeControl, obj, swipeObj) {
         anim.current = Math.max(0, Math.min(1, (0 - (anim.startTime - performance.now())) / duration));
         anim.x = startPos.x + ((endPos.x - startPos.x) * anim.current);
         anim.y = startPos.y + ((endPos.y - startPos.y) * anim.current);
-        
-        _sendTouchEventHandle(el, "touchmove", { x: anim.x, y: anim.y });
         if (anim.current >= 1) {
           _sendTouchEventHandle(el, "touchend", { x: anim.x, y: anim.y });
         }
+        _sendTouchEventHandle(el, "touchmove", { x: anim.x, y: anim.y });
       }
       anim.rAF();
     }
